@@ -1,324 +1,894 @@
-<h1 id="git-overview">Git: Overview</h1>
-<h3 id="go-to-wolff.shgit_workshop-and-follow-along-during-our-recitation">Go to <a href="https://wolff.sh/git_workshop">wolff.sh/git_workshop</a> and follow along during our recitation!</h3>
-<p>(<em>Note: GitHub lets you host (static) webpages for all of your projects, for free. The webpage associated with this project (above) is just an HTML document that I generated from the README using <a href="https://pandoc.org/"><code>pandoc</code></a></em>.)</p>
-<hr />
-<h3 id="before-starting">Before starting:</h3>
-<ul>
-<li>Download <a href="https://desktop.github.com/">Github Desktop</a></li>
-<li>Join <a href="https://github.com/join">GitHub</a> by creating an account
-<ul>
-<li>Use a professional-enough name, since you’ll typically include this in your résumé</li>
-</ul></li>
-</ul>
-<hr />
-<h2 id="what-is-version-control">What is Version Control?</h2>
-<p>Imagine you’re working on a paper CancerEvolution.docx and you re-write a section but you’re not sure if you want to keep it. Therefore, you “Save As” under “CancerEvolutionRewrite.docx”. As you’re working on this you end up re-writing another section and “Save As” to create a slightly different copy. Or maybe you just create draft after draft and want to have different versions for later. You’re essentially creating different version of the same document and manually organizing them on your desktop! Not very effective though.</p>
-<h2 id="what-is-git">What is Git?</h2>
-<p>A version control system for code! Gone are the days of “FinalPaperDraft.docx”, “FinalPaperDraftFinal.docx”, “FinalPaperDraftFinalFinal.docx”.</p>
-<blockquote>
-<p>“By far, the most widely used modern version control system in the world today is Git. Git is a mature, actively maintained open source project originally developed in 2005 by Linus Torvalds, the famous creator of the Linux operating system kernel. A staggering number of software projects rely on Git for version control, including commercial projects as well as open source.”</p>
-</blockquote>
-<p>It’s extremely useful for tracking and undoing changes to your code over time, as well as sharing your code with others.</p>
-<h2 id="what-is-github">What is GitHub?</h2>
-<p>It’s a online platform that lets you store and version control your code. It’s built around Git. There are others like it, such as GitLab and BitBucket.</p>
-<h2 id="so-whats-the-meaningful-difference-between-them">So what’s the meaningful difference between them?</h2>
-<p>Good question. Git exists purely on the command line, and is maintained independently from these platforms. You don’t need to know the command line to use GitHub or GitLab, you just need to understand what version control is (and how to copy-paste)!</p>
-<h2 id="how-to-use-github">How to use GitHub?</h2>
-<p>There are a few different ways!</p>
-<ol type="1">
-<li>Their Website – <a href="http:/github.com">Github.com</a><br />
-<img src="./images/create_github_repo.png" alt="Creating a GitHub repo from GitHub Website" width="400"/></li>
-<li>The desktop app – <a href="https://desktop.github.com/">Github Desktop</a><br />
-<img src="./images/github_desktop.png" alt="Creating a GitHub repo from GitHub Desktop" width="400"/></li>
-<li>The command line – <code>hub</code> – <code>brew install hub</code><br />
-<img src="./images/github_cli.png" alt="Creating a GitHub repo from CLI" width="400"/>
-<ul>
-<li>the only* thing you can’t do with standalone <code>git</code> is create repositories</li>
-</ul></li>
-<li>An IDE like Atom! (GitHub integration)<br />
-<img src="./images/atom_github_support.png" alt="Creating a GitHub repo from Atom" width="400"/></li>
-</ol>
-<p>As a note, being a student gets you a <a href="https://education.github.com/pack">premium version (Github Student Dev pack)</a> of Github for free</p>
-<blockquote>
-<p>It includes everything in GitHub Free, unlimited collaborators for private repositories, and advanced code review tools for private and public repositories.</p>
-</blockquote>
-<hr />
-<h1 id="git-concepts">Git Concepts</h1>
-<h2 id="the-repository">The Repository</h2>
-<ul>
-<li>When you are working on a project and want to use version control, you need to first create a repository (“repo”) for it</li>
-<li>You need to interface with Github for this (or install the <code>hub</code> command)</li>
-<li>It can be public or private</li>
-<li>The repository is where you’ll send your updates</li>
-</ul>
-<h2 id="commits">Commits</h2>
-<ul>
-<li>When you make changes, you need to submit them to be saved</li>
-<li>You need to specify which changes you want to save!
-<ul>
-<li>You might have various things that you’re working on, and only finished one of them that you want to commit</li>
-</ul></li>
-<li>You must “git add” the files that you want to “save”</li>
-<li>A commit is like a “soft-save” because it’s only local
-<ul>
-<li>this can be nice—you don’t always have an internet connection</li>
-</ul></li>
-<li>You need to publish your commits to make them global and visible to others!</li>
-</ul>
-<h2 id="pushing-pulling">Pushing, Pulling</h2>
-<p>This is how we publish and retrieve changes!</p>
-<p>You push your local changes out to the repo, and then others can pull them in. Sometimes you’ve edited the same thing as someone else, and Git can’t figure out how to automatically combine them—this is when you’ll need to decide what to keep and what to toss. Situations like this can be frustrating when you’re working with other people, so sometimes it’s nice to have your own git workspace.</p>
-<h2 id="branching-and-merging">Branching and Merging</h2>
-<p>Want to start adding something new but don’t want to interfere with the stable code? Time to start a new branch! By default, you’re on the “master” branch.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="op">&gt;</span> <span class="fu">git</span> checkout -b dev_branch</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="ex">Switched</span> to a new branch <span class="st">&#39;dev_branch&#39;</span></a></code></pre></div>
-<p>Branches are useful for developing new features in isolation. Creating a new branch creates a copy of the old branch, but now you can grow it separately. When you’re done, you can splice that branch back into the main tree!</p>
-<p>What is this splicing exactly? It’s the “merge” operation. Merging is best done when there aren’t conflicts between the new cold and the old code, but Git helps you handle conflicts when they arise.</p>
-<h2 id="whats-all-this-about-origin-and-master">What’s all this about Origin and Master?</h2>
-<p>The “origin” is the remote location that is housing the code. By default, it is named “origin”, which is just a convention that arose.</p>
-<p>You can set up different remote locations if you like—I have set up both GitHub and GitLab on the same repository, I just needed to push my changes to each remote location.</p>
-<p>The “master” is the default branch that is created when you’re working on a project. It, too, is a common convention. Amazon uses “mainline’ as their default name, and other companies are switching away from the”master" terminology. Branching is a useful feature for developing new or experimental changes in isolation without impacting the existing code.</p>
-<h2 id="so-these-are-all-words-but-can-you-give-an-analogy">So these are all words, but can you give an analogy?</h2>
-<p>I think it all comes together like growing a <strong>bonsai tree</strong> in your house. All together, it’s a gradual process where you can curate designs and shapes with the wood. You can keep the blinds closed or let specific people into your house!</p>
-<p><strong>A Pot with Soil</strong>: Having a GitHub or GitLab account is having a place to grow your plant. It’s your pot with soil.</p>
-<p><strong>A Seed</strong>: Creating the repo is like planting a seed—now you can watch it grow.</p>
-<p><strong>Taking up Nutrients…</strong>: Adding changes to your files! These are what you need to grow the project.</p>
-<p><strong>Growing Taller</strong>: Committing those changes to your project grows it. Commit after commit, the project grows bigger.</p>
-<p><strong>Opening the Blinds</strong>: Push! People need to see your project! If you don’t push your local changes to the repo, they might as well not exist! That said, you can push to a <em>private</em> repo, so that only people you let inside your house can see the bonsai tree.</p>
-<p><strong>Branching</strong>: Very literal here. You’re growing out a new branch from the trunk. The trunk will continue to be the main part of the tree, but the branch can grow separately.</p>
-<p><strong>Splicing A Branch Back In</strong>: Merging! You’re reintroducing a branch that previously diverged. Now it’s part of the main tree again and brought back some changes with it.</p>
-<p>This metaphor falls apart a bit once you start factoring in other people. For example, what exactly is a merge conflict on a bonsai tree? What is rebasing? There’s probably a joke about <code>cherry-pick</code>ing here (a surprisingly useful git command). But it’s still a useful starting analogy.</p>
-<hr />
-<h2 id="what-is-it-under-the-hood">What Is It Under The Hood?</h2>
-<p>Complex and abstract. It’s essentially a giant python dictionary with a few different types of objects in it (tree objects, commit objects, and blobs). At the same time, it holds within it a graph structure. Most people use it for years and years without ever bothering with what’s going on underneath and, frankly, I think it’s not worth understanding.</p>
-<hr />
-<h1 id="example">Example</h1>
-<p>Let’s create a repository!</p>
-<ol type="1">
-<li>You need to have a GitHub account</li>
-<li>You need to have GitHub Desktop installed</li>
-</ol>
-<p>So let’s get started! GitHub has a few cute features with repos. Whenever you’re looking at a repo, if there’s a document named “README.*”, it will be displayed! The most common format is <a href="https://www.markdownguide.org/basic-syntax/">Markdown</a>, which uses the extension “*.md”. It’s considered good practice to always include a README in the root of your repo with information about it, such as instructions on using it.</p>
-<p>GitHub also has a few repository names that it can treat differently. For example, if you name a repo “[username].github.io”, GitHub will actually create a new address for you there, and you can create your own small, static website! Try visiting <a href="https://matthewwolff.github.io">matthewwolff.github.io</a>! Today, however, we’re going to create a different kind of specially named repo.</p>
-<ol type="1">
-<li>Open GitHub desktop</li>
-<li>Create a new (local) repository<br />
-<img src="./images/create_new_repo.png" width="400"/>
-<ul>
-<li>ctrl-N or CMD-N</li>
-<li>The name will be your github username</li>
-<li>Initialize it with a README
-<ul>
-<li>what is a readme?</li>
-<li>what is markdown?</li>
-</ul></li>
-</ul></li>
-<li>Publish your repository
-<ul>
-<li>Make sure it’s public!</li>
-<li>There’s already one automatic commit to it</li>
-</ul></li>
-<li>Go to <a href="https://github.com">GitHub</a> on your profile</li>
-<li>Enable this “special” repo so others can see it!</li>
-<li>Go back to your files. Change the README.
-<ul>
-<li>You now have a local repo. Let’s change the README to a small intro for your github account. Mine is below!<br />
-</li>
-</ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode md"><code class="sourceCode markdown"><a class="sourceLine" id="cb2-1" title="1"><span class="fu"># Hey! 👻</span></a>
-<a class="sourceLine" id="cb2-2" title="2">* <span class="fl">UW ➡️ Computer Science, Genetics &amp; Genomics</span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="fl">* CMU ➡️ Computational 🅱️iology, Data Science</span></a>
-<a class="sourceLine" id="cb2-4" title="4"></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="al">![GitHub Stats](https://github-readme-stats.vercel.app/api?username=matthewwolff&amp;include_all_commits=true&amp;include_private=true&amp;hide=contribs&amp;show_icons=true&amp;&amp;line_height=40)</span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="al">![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=matthewwolff&amp;show_icons=true&amp;hide=R,JavaScript,MATLAB&amp;langs_count=7)</span></a></code></pre></div></li>
-<li>Commit and Push!</li>
-<li><p>Go to <a href="https://github.com">GitHub</a> on your profile again</p>
-<p><img src="./images/github_profile.png" width="1000"/></p></li>
-</ol>
-<hr />
-<h2 id="gitignore">.gitignore</h2>
-<p>This deserves it’s own little section, because you’ll typically want to use these. Generally you want to be careful about blindly adding folders in Git. Why? Because there’s probably some big or sensitive files in them somewhere that you don’t want to upload.</p>
-<p>But adding things manually is so tedious… what if we could just specify what we want to ignore?</p>
-<p>Enter <code>.gitignore</code>. This is a special file (at the root of your repo) that git checks to remember what NOT to consider when it’s checking what you’ve changed. It also prevents certain files from being added when you add entire directories. It’s very useful when you don’t want to upload large data files, secret credentials, or small config files created by your IDE!</p>
-<h4 id="gitignore.io---very-useful-for-autogenerating-this-for-certain-platformslanguagestools"><a href="https://gitignore.io">gitignore.io</a> - very useful for autogenerating this for certain platforms/languages/tools</h4>
-<hr />
-<h1 id="command-line-git-key-commands">Command Line Git – Key Commands</h1>
-<h2 id="creation-git-init-and-git-remote">Creation: <code>git init</code> and <code>git remote</code></h2>
-<p>This is how you create a local project!</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">git</span> init <span class="co"># create the .git folder</span></a>
-<a class="sourceLine" id="cb3-2" title="2"><span class="fu">git</span> remote -v <span class="co"># you have nowhere to send your changes!</span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="fu">git</span> remote add origin https://github.com/matthewwolff/github_workshop</a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="fu">git</span> remote -v <span class="co"># origin is now set!</span></a></code></pre></div>
-<h2 id="git-status"><code>git status</code></h2>
-<p>Git will automatically evaluate which files have been changed, created, or deleted, and will then give you a quick report</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="op">&gt;</span> <span class="fu">git</span> status</a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="ex">On</span> branch master</a>
-<a class="sourceLine" id="cb4-3" title="3"></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="ex">No</span> commits yet</a>
-<a class="sourceLine" id="cb4-5" title="5"></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="ex">Untracked</span> files:</a>
-<a class="sourceLine" id="cb4-7" title="7">  <span class="kw">(</span><span class="ex">use</span> <span class="st">&quot;git add [file]...&quot;</span> to include in what will be committed<span class="kw">)</span></a>
-<a class="sourceLine" id="cb4-8" title="8"></a>
-<a class="sourceLine" id="cb4-9" title="9">    <span class="ex">README.md</span></a>
-<a class="sourceLine" id="cb4-10" title="10">    <span class="ex">images/</span></a>
-<a class="sourceLine" id="cb4-11" title="11">    <span class="ex">index.html</span></a>
-<a class="sourceLine" id="cb4-12" title="12"></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="ex">nothing</span> added to commit but untracked files present (use <span class="st">&quot;git add&quot;</span> to track)</a></code></pre></div>
-<h2 id="git-add---all"><code>git add --all</code></h2>
-<p>A nice short-hand to add all the files at once! It’s recursive, so be careful</p>
-<h2 id="git-commit--m-my-message"><code>git commit -m "my message"</code></h2>
-<p>It’s important to have a descriptive message, especially if you’re working with other people. Saying “Fixed bug” isn’t very useful!</p>
-<h2 id="git-push"><code>git push</code></h2>
-<p>Git is decentralized. Your repository is local until you make it global. Use <code>git push</code> to send your changes off to the repository</p>
-<h2 id="git-pull"><code>git pull</code></h2>
-<p>If you’re working on a project on a lab computer and a home computer and making changes from both, pull the changes that you pushed from the other computer! Also, if you’re working with other people you want to make sure you have the latest changes</p>
-<h2 id="git-checkout-filename"><code>git checkout [filename]</code></h2>
-<p>This one is good to know. If you want to undo all the changes that you made to a file, you can just “checkout” that file from the last commit. Very good for undoing mistakes or accidental changes</p>
-<h2 id="all-together">All Together</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="bu">echo</span> <span class="st">&quot;i have created a repo on GitHub with this project name&quot;</span></a>
-<a class="sourceLine" id="cb5-2" title="2"><span class="fu">mkdir</span> my_project <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> my_project</a>
-<a class="sourceLine" id="cb5-3" title="3"><span class="fu">git</span> init</a>
-<a class="sourceLine" id="cb5-4" title="4"><span class="fu">git</span> remote add origin https://github.com/matthewwolff/my_project</a>
-<a class="sourceLine" id="cb5-5" title="5"><span class="fu">git</span> status</a>
-<a class="sourceLine" id="cb5-6" title="6"></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="bu">echo</span> <span class="st">&quot;# My Project&quot;</span> <span class="op">&gt;&gt;</span> README.md <span class="co"># create a change</span></a>
-<a class="sourceLine" id="cb5-8" title="8"></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="fu">git</span> add --all</a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="fu">git</span> commit -m <span class="st">&quot;initial commit&quot;</span></a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="fu">git</span> push <span class="co"># publish it</span></a>
-<a class="sourceLine" id="cb5-12" title="12"></a>
-<a class="sourceLine" id="cb5-13" title="13"><span class="fu">rm</span> README.md <span class="co"># oops</span></a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="fu">git</span> checkout README.md <span class="co"># all better</span></a></code></pre></div>
-<hr />
-<h1 id="best-practices">Best Practices</h1>
-<p>Using Git correctly helps future you and your teammates</p>
-<ul>
-<li>Make clean, single-purpose commits</li>
-<li>Don’t use <code>--force</code></li>
-<li>Write meaningful commit messages</li>
-<li>Don’t alter published history
-<ul>
-<li>I do this A LOT, but only on my personal projects</li>
-<li>You can re-write git history, but if anyone else is working with your code, it really screws them up and they will have to deal with a lot of errors when trying to merge or pulling</li>
-<li>Some companies use <em>advanced</em> git configurations to prevent this (look into “git hooks”)</li>
-</ul></li>
-<li>Don’t commit generated files
-<ul>
-<li>if your code generates files every time you run it, don’t bother committing those!</li>
-</ul></li>
-<li>Don’t commit really big files that change often
-<ul>
-<li>your <code>.git/</code> folder will be bloated and you’ll have to use a tool like <a href="https://rtyley.github.io/bfg-repo-cleaner/"><code>bfg</code></a> to clean it out</li>
-</ul></li>
-<li>Don’t commit sensitive information
-<ul>
-<li>This goes without saying, but if you submit passwords or API keys, you’ll need to edit the git history</li>
-<li>You can’t just submit a new commit, because someone could look at older commits</li>
-<li>Use <a href="https://rtyley.github.io/bfg-repo-cleaner/"><code>bfg</code></a> to fix this mistake</li>
-</ul></li>
-</ul>
-<hr />
-<h1 id="misc.">Misc.</h1>
-<h3 id="git-integration">Git Integration</h3>
-<p>Almost every IDE (Integrated Developer Environment) that you use has git integration! For instance, Atom, IntelliJ, GoLand. It’s like a miniature GitHub desktop, except it’s not specific to GitHub!</p>
-<h3 id="are-there-other-version-control-systems">Are there other Version Control systems?</h3>
-<p>Yes, there are actually a few, and the following list is not exhaustive:</p>
-<ul>
-<li>Git
-<ul>
-<li>Created in 2005 and currently the most used</li>
-<li>Decentralized, so you don’t need a central server</li>
-<li>Can have local changes and use it completely offline</li>
-<li>Written in C</li>
-</ul></li>
-<li>Mercurial
-<ul>
-<li>Decentralized, like Git</li>
-<li>Doesn’t have a Merge feature (some people really don’t like that)</li>
-<li>Written in Python</li>
-<li>Was competing with Git to be used by Linux Kernel, ultimately lost</li>
-<li>Easier to learn than Git, with better documentation</li>
-</ul></li>
-<li>CVS [Concurrent Versions System]
-<ul>
-<li>a dinosaur from the 80’s</li>
-<li>Centralized, runs on your server</li>
-<li>You “check out” code, make changes, then “check in”</li>
-</ul></li>
-<li>SVN [Apache SubVersioN]
-<ul>
-<li>A better version of CVS</li>
-<li>Centralized</li>
-<li>Not <em>totally</em> uncommon</li>
-</ul></li>
-</ul>
-<h3 id="cool-commands">Cool Commands</h3>
-<p>I have dozens of bash aliases set up for certain git commands. It helps to not need to remember or worry about certain things, like which branch you’re on.</p>
-<ul>
-<li><code>git whatchanged -p --abbrev-commit --pretty=medium</code>
-<ul>
-<li>HEAVEN SENT. This lets you view a <code>diff</code> of the past commits</li>
-<li>extremely useful to jog your memory on what was changed in the last commit</li>
-</ul></li>
-<li><code>git diff</code>
-<ul>
-<li>this shows the you the difference between your current files and the last commit. Only more useful than the above when you haven’t committed yet</li>
-</ul></li>
-<li><code>git reset</code>
-<ul>
-<li>This will do a <strong>soft</strong> reset and unstage any changes</li>
-<li>Useful for when you accidentally <code>git add</code> a file</li>
-</ul></li>
-<li><code>git log --oneline --decorate --graph</code>
-<ul>
-<li>see a brief, visual summary of the branch histories</li>
-</ul></li>
-<li><code>git status -s</code>
-<ul>
-<li>see which uncommitted files have changed!</li>
-</ul></li>
-<li><code>git [push/pull] origin "$(git_current_branch)"</code>
-<ul>
-<li>this uses a built-in git method to grab your current branch</li>
-<li>most useful when you’re working with branches</li>
-</ul></li>
-<li><code>git stash</code> and <code>git stash pop</code>
-<ul>
-<li>When you’re switching between branches and you don’t want to commit your changes yet, you can simply stash them. When you switch back to the branch, use <code>git stash pop</code> to pop them off the stash stack (data structures!)</li>
-</ul></li>
-<li><code>git cherry-pick</code>
-<ul>
-<li>This let’s you pluck a single commit from a different branch and add it to your current branch</li>
-</ul></li>
-<li><code>git pull --rebase</code>
-<ul>
-<li>This is what some people actually use as their default pull command<br />
-&gt; “Whenever I pull, under most circumstances I git pull –rebase. This is because I like to see a linear history (my commit came after all commits that were pushed before it, instead of being developed in parallel). It makes history visualization much simpler and git bisect easier to see and understand. A specific circumstance in which you should avoid using <code>git pull --rebase</code> is if you merged since your last push. You might want to <code>git fetch; git rebase -p @{u}</code> (and check to make sure the merge was recreated properly) or do a normal merge in that circumstance.”</li>
-</ul></li>
-</ul>
-<h3 id="naughty-commands">Naughty Commands</h3>
-<p>Let’s talk about what you <em>shouldn’t</em> do, but might find useful. These all have to do with re-writing history. As a rule of thumb, you know that you’re doing something bad when you have to use <code>git push --force</code>, so please keep that in mind.</p>
-<p>When you use the <code>--force</code> flag, that means your local repo disagrees with the origin. However, if you haven’t <strong><code>pushed</code></strong> yet, then you can manipulate all your local commits however you want! That’s the ideal use case for these.</p>
-<ul>
-<li><code>git reset --hard [COMMIT HASH]</code>
-<ul>
-<li>Permanently time travel backwards to a specific commit</li>
-<li>This will destroy any changes you’ve made since then unless you’ve pushed them</li>
-<li>Find the commit hash using <code>git log</code></li>
-</ul></li>
-<li><code>git commit --amend</code>: edit your last commit message
-<ul>
-<li>I use this a lot for quick adjustments before I push</li>
-</ul></li>
-<li><code>git add [file] &amp;&amp; git commit -v --no-edit --amend</code>
-<ul>
-<li>This adds a file to your last commit and re-submits it</li>
-</ul></li>
-</ul>
-<p>An alias I personally use a lot when I’m making lots of small adjustments to something I just pushed is:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">alis</span> <span class="st">&#39;oops!&#39;</span>=<span class="st">&#39;git add --all &amp;&amp; git commit -v --no-edit --amend &amp;&amp; git push -u --force $(git_current_branch)&#39;</span></a></code></pre></div>
-<hr />
-<h2 id="plug-oh-my-zsh-git-aliases">Plug: Oh-my-zsh Git Aliases</h2>
-<p>If you use <a href="https://ohmyz.sh/">Oh-My-Zsh</a> (I love it) instead BASH and have the <code>git</code> plugin, you have automatic access to <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Cheatsheet#git">a plethora of git aliases</a>. As a small plug, Oh-My-Zsh is a ZSH framework that adds a ton of functionality to your terminal and has lots of <a href="https://github.com/ohmyzsh/ohmyzsh/wiki/Themes">different shell prompts or “themes”</a>. Overall: Zsh + oh-my-zsh framework will give you auto-completion, tab completion, several cool themes, programming language integration and like bash is POSIX compliant (I suggest you not learn anything that isn’t—it won’t be generally portable knowledge).</p>
-<p>You can try out my personal ZSH + oh-my-zsh set-up, which will also make the aliases available to you as long as you’re in ZSH:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">curl</span> -fsSL tryzsh.wolff.sh <span class="kw">|</span> <span class="fu">bash</span></a></code></pre></div>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for Mac OS X (vers 31 October 2006 - Apple Inc. build 15.18.3), see www.w3.org">
+
+  <title></title>
+</head>
+
+<body>
+  <h1 id="git-overview">Git: Overview</h1>
+
+  <h3 id=
+  "go-to-wolff.shgit_workshop-and-follow-along-during-our-recitation">
+  Go to <a href=
+  "https://wolff.sh/git_workshop">wolff.sh/git_workshop</a> and
+  follow along during our recitation!</h3>
+
+  <p>(<em>Note: GitHub lets you host (static) webpages for all of
+  your projects, for free. The webpage associated with this project
+  (above) is just an HTML document that I generated from the README
+  using <a href=
+  "https://pandoc.org/"><code>pandoc</code></a></em>.)</p>
+  <hr>
+
+  <h3 id="before-starting">Before starting:</h3>
+
+  <ul>
+    <li>Download <a href="https://desktop.github.com/">Github
+    Desktop</a></li>
+
+    <li>Join <a href="https://github.com/join">GitHub</a> by
+    creating an account
+
+      <ul>
+        <li>Use a professional-enough name, since you’ll
+        typically include this in your résumé</li>
+      </ul>
+    </li>
+  </ul>
+  <hr>
+
+  <h2 id="what-is-version-control">What is Version Control?</h2>
+
+  <p>Imagine you’re working on a paper CancerEvolution.docx and
+  you re-write a section but you’re not sure if you want to keep
+  it. Therefore, you “Save As” under
+  “CancerEvolutionRewrite.docx”. As you’re working on this
+  you end up re-writing another section and “Save As” to create
+  a slightly different copy. Or maybe you just create draft after
+  draft and want to have different versions for later. You’re
+  essentially creating different version of the same document and
+  manually organizing them on your desktop! Not very effective
+  though.</p>
+
+  <h2 id="what-is-git">What is Git?</h2>
+
+  <p>A version control system for code! Gone are the days of
+  “FinalPaperDraft.docx”, “FinalPaperDraftFinal.docx”,
+  “FinalPaperDraftFinalFinal.docx”.</p>
+
+  <blockquote>
+    <p>“By far, the most widely used modern version control
+    system in the world today is Git. Git is a mature, actively
+    maintained open source project originally developed in 2005 by
+    Linus Torvalds, the famous creator of the Linux operating
+    system kernel. A staggering number of software projects rely on
+    Git for version control, including commercial projects as well
+    as open source.”</p>
+  </blockquote>
+
+  <p>It’s extremely useful for tracking and undoing changes to
+  your code over time, as well as sharing your code with
+  others.</p>
+
+  <h2 id="what-is-github">What is GitHub?</h2>
+
+  <p>It’s a online platform that lets you store and version
+  control your code. It’s built around Git. There are others like
+  it, such as GitLab and BitBucket.</p>
+
+  <h2 id="so-whats-the-meaningful-difference-between-them">So
+  what’s the meaningful difference between them?</h2>
+
+  <p>Good question. Git exists purely on the command line, and is
+  maintained independently from these platforms. You don’t need
+  to know the command line to use GitHub or GitLab, you just need
+  to understand what version control is (and how to
+  copy-paste)!</p>
+
+  <h2 id="how-to-use-github">How to use GitHub?</h2>
+
+  <p>There are a few different ways!</p>
+
+  <ol type="1">
+    <li>Their Website – <a href=
+    "http:/github.com">Github.com</a><br>
+    <img src="./images/create_github_repo.png" alt=
+    "Creating a GitHub repo from GitHub Website" width="400"></li>
+
+    <li>The desktop app – <a href=
+    "https://desktop.github.com/">Github Desktop</a><br>
+    <img src="./images/github_desktop.png" alt=
+    "Creating a GitHub repo from GitHub Desktop" width="400"></li>
+
+    <li>The command line – <code>hub</code> – <code>brew
+    install hub</code><br>
+      <img src="./images/github_cli.png" alt=
+      "Creating a GitHub repo from CLI" width="400">
+
+      <ul>
+        <li>the only* thing you can’t do with standalone
+        <code>git</code> is create repositories</li>
+      </ul>
+    </li>
+
+    <li>An IDE like Atom! (GitHub integration)<br>
+    <img src="./images/atom_github_support.png" alt=
+    "Creating a GitHub repo from Atom" width="400"></li>
+  </ol>
+
+  <p>As a note, being a student gets you a <a href=
+  "https://education.github.com/pack">premium version (Github
+  Student Dev pack)</a> of Github for free</p>
+
+  <blockquote>
+    <p>It includes everything in GitHub Free, unlimited
+    collaborators for private repositories, and advanced code
+    review tools for private and public repositories.</p>
+  </blockquote>
+  <hr>
+
+  <h1 id="git-concepts">Git Concepts</h1>
+
+  <h2 id="the-repository">The Repository</h2>
+
+  <ul>
+    <li>When you are working on a project and want to use version
+    control, you need to first create a repository (“repo”) for
+    it</li>
+
+    <li>You need to interface with Github for this (or install the
+    <code>hub</code> command)</li>
+
+    <li>It can be public or private</li>
+
+    <li>The repository is where you’ll send your updates</li>
+  </ul>
+
+  <h2 id="commits">Commits</h2>
+
+  <ul>
+    <li>When you make changes, you need to submit them to be
+    saved</li>
+
+    <li>You need to specify which changes you want to save!
+
+      <ul>
+        <li>You might have various things that you’re working on,
+        and only finished one of them that you want to commit</li>
+      </ul>
+    </li>
+
+    <li>You must “git add” the files that you want to
+    “save”</li>
+
+    <li>A commit is like a “soft-save” because it’s only
+    local
+
+      <ul>
+        <li>this can be nice—you don’t always have an internet
+        connection</li>
+      </ul>
+    </li>
+
+    <li>You need to publish your commits to make them global and
+    visible to others!</li>
+  </ul>
+
+  <h2 id="pushing-pulling">Pushing, Pulling</h2>
+
+  <p>This is how we publish and retrieve changes!</p>
+
+  <p>You push your local changes out to the repo, and then others
+  can pull them in. Sometimes you’ve edited the same thing as
+  someone else, and Git can’t figure out how to automatically
+  combine them—this is when you’ll need to decide what to keep
+  and what to toss. Situations like this can be frustrating when
+  you’re working with other people, so sometimes it’s nice to
+  have your own git workspace.</p>
+
+  <h2 id="branching-and-merging">Branching and Merging</h2>
+
+  <p>Want to start adding something new but don’t want to
+  interfere with the stable code? Time to start a new branch! By
+  default, you’re on the “master” branch.</p>
+
+  <div class="sourceCode" id="cb1">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb1-1"
+title="1" name="cb1-1"><span class="op">&gt;</span> <span class=
+"fu">git</span> checkout -b dev_branch</a>
+<a class="sourceLine" id="cb1-2" title="2" name=
+"cb1-2"><span class="ex">Switched</span> to a new branch <span class="st">&#39;dev_branch&#39;</span></a></code>
+</pre>
+  </div>
+
+  <p>Branches are useful for developing new features in isolation.
+  Creating a new branch creates a copy of the old branch, but now
+  you can grow it separately. When you’re done, you can splice
+  that branch back into the main tree!</p>
+
+  <p>What is this splicing exactly? It’s the “merge”
+  operation. Merging is best done when there aren’t conflicts
+  between the new cold and the old code, but Git helps you handle
+  conflicts when they arise.</p>
+
+  <h2 id="whats-all-this-about-origin-and-master">What’s all this
+  about Origin and Master?</h2>
+
+  <p>The “origin” is the remote location that is housing the
+  code. By default, it is named “origin”, which is just a
+  convention that arose.</p>
+
+  <p>You can set up different remote locations if you like—I have
+  set up both GitHub and GitLab on the same repository, I just
+  needed to push my changes to each remote location.</p>
+
+  <p>The “master” is the default branch that is created when
+  you’re working on a project. It, too, is a common convention.
+  Amazon uses “mainline’ as their default name, and other
+  companies are switching away from the”master" terminology.
+  Branching is a useful feature for developing new or experimental
+  changes in isolation without impacting the existing code.</p>
+
+  <h2 id="so-these-are-all-words-but-can-you-give-an-analogy">So
+  these are all words, but can you give an analogy?</h2>
+
+  <p>I think it all comes together like growing a <strong>bonsai
+  tree</strong> in your house. All together, it’s a gradual
+  process where you can curate designs and shapes with the wood.
+  You can keep the blinds closed or let specific people into your
+  house!</p>
+
+  <p><strong>A Pot with Soil</strong>: Having a GitHub or GitLab
+  account is having a place to grow your plant. It’s your pot
+  with soil.</p>
+
+  <p><strong>A Seed</strong>: Creating the repo is like planting a
+  seed—now you can watch it grow.</p>
+
+  <p><strong>Taking up Nutrients…</strong>: Adding changes to
+  your files! These are what you need to grow the project.</p>
+
+  <p><strong>Growing Taller</strong>: Committing those changes to
+  your project grows it. Commit after commit, the project grows
+  bigger.</p>
+
+  <p><strong>Opening the Blinds</strong>: Push! People need to see
+  your project! If you don’t push your local changes to the repo,
+  they might as well not exist! That said, you can push to a
+  <em>private</em> repo, so that only people you let inside your
+  house can see the bonsai tree.</p>
+
+  <p><strong>Branching</strong>: Very literal here. You’re
+  growing out a new branch from the trunk. The trunk will continue
+  to be the main part of the tree, but the branch can grow
+  separately.</p>
+
+  <p><strong>Splicing A Branch Back In</strong>: Merging! You’re
+  reintroducing a branch that previously diverged. Now it’s part
+  of the main tree again and brought back some changes with it.</p>
+
+  <p>This metaphor falls apart a bit once you start factoring in
+  other people. For example, what exactly is a merge conflict on a
+  bonsai tree? What is rebasing? There’s probably a joke about
+  <code>cherry-pick</code>ing here (a surprisingly useful git
+  command). But it’s still a useful starting analogy.</p>
+  <hr>
+
+  <h2 id="what-is-it-under-the-hood">What Is It Under The
+  Hood?</h2>
+
+  <p>Complex and abstract. It’s essentially a giant python
+  dictionary with a few different types of objects in it (tree
+  objects, commit objects, and blobs). At the same time, it holds
+  within it a graph structure. Most people use it for years and
+  years without ever bothering with what’s going on underneath
+  and, frankly, I think it’s not worth understanding.</p>
+  <hr>
+
+  <h1 id="example">Example</h1>
+
+  <p>Let’s create a repository!</p>
+
+  <ol type="1">
+    <li>You need to have a GitHub account</li>
+
+    <li>You need to have GitHub Desktop installed</li>
+  </ol>
+
+  <p>So let’s get started! GitHub has a few cute features with
+  repos. Whenever you’re looking at a repo, if there’s a
+  document named “README.*”, it will be displayed! The most
+  common format is <a href=
+  "https://www.markdownguide.org/basic-syntax/">Markdown</a>, which
+  uses the extension “*.md”. It’s considered good practice to
+  always include a README in the root of your repo with information
+  about it, such as instructions on using it.</p>
+
+  <p>GitHub also has a few repository names that it can treat
+  differently. For example, if you name a repo
+  “[username].github.io”, GitHub will actually create a new
+  address for you there, and you can create your own small, static
+  website! Try visiting <a href=
+  "https://matthewwolff.github.io">matthewwolff.github.io</a>!
+  Today, however, we’re going to create a different kind of
+  specially named repo.</p>
+
+  <ol type="1">
+    <li>Open GitHub desktop</li>
+
+    <li>Create a new (local) repository<br>
+      <img src="./images/create_new_repo.png" width="400">
+
+      <ul>
+        <li>ctrl-N or CMD-N</li>
+
+        <li>The name will be your github username</li>
+
+        <li>Initialize it with a README
+
+          <ul>
+            <li>what is a readme?</li>
+
+            <li>what is markdown?</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+
+    <li>Publish your repository
+
+      <ul>
+        <li>Make sure it’s public!</li>
+
+        <li>There’s already one automatic commit to it</li>
+      </ul>
+    </li>
+
+    <li>Go to <a href="https://github.com">GitHub</a> on your
+    profile</li>
+
+    <li>Enable this “special” repo so others can see it!</li>
+
+    <li>Go back to your files. Change the README.
+
+      <ul>
+        <li>You now have a local repo. Let’s change the README to
+        a small intro for your github account. Mine is
+        below!<br></li>
+      </ul>
+
+      <div class="sourceCode" id="cb2">
+        <pre class="sourceCode md">
+<code class="sourceCode markdown"><a class="sourceLine" id="cb2-1"
+title="1" name="cb2-1"><span class="fu"># Hey! 👻</span></a>
+<a class="sourceLine" id="cb2-2" title="2" name=
+"cb2-2">* <span class=
+"fl">UW ➡️ Computer Science, Genetics &amp; Genomics</span></a>
+<a class="sourceLine" id="cb2-3" title="3" name=
+"cb2-3"><span class="fl">* CMU ➡️ Computational 🅱️iology, Data Science</span></a>
+<a class="sourceLine" id="cb2-4" title="4" name="cb2-4"></a>
+<a class="sourceLine" id="cb2-5" title="5" name=
+"cb2-5"><span class="al">![GitHub Stats](https://github-readme-stats.vercel.app/api?username=matthewwolff&amp;include_all_commits=true&amp;include_private=true&amp;hide=contribs&amp;show_icons=true&amp;&amp;line_height=40)</span></a>
+<a class="sourceLine" id="cb2-6" title="6" name=
+"cb2-6"><span class="al">![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=matthewwolff&amp;show_icons=true&amp;hide=R,JavaScript,MATLAB&amp;langs_count=7)</span></a></code>
+</pre>
+      </div>
+    </li>
+
+    <li>Commit and Push!</li>
+
+    <li>
+      <p>Go to <a href="https://github.com">GitHub</a> on your
+      profile again</p>
+
+      <p><img src="./images/github_profile.png" width="1000"></p>
+    </li>
+  </ol>
+  <hr>
+
+  <h2 id="gitignore">.gitignore</h2>
+
+  <p>This deserves it’s own little section, because you’ll
+  typically want to use these. Generally you want to be careful
+  about blindly adding folders in Git. Why? Because there’s
+  probably some big or sensitive files in them somewhere that you
+  don’t want to upload.</p>
+
+  <p>But adding things manually is so tedious… what if we could
+  just specify what we want to ignore?</p>
+
+  <p>Enter <code>.gitignore</code>. This is a special file (at the
+  root of your repo) that git checks to remember what NOT to
+  consider when it’s checking what you’ve changed. It also
+  prevents certain files from being added when you add entire
+  directories. It’s very useful when you don’t want to upload
+  large data files, secret credentials, or small config files
+  created by your IDE!</p>
+
+  <h4 id=
+  "gitignore.io---very-useful-for-autogenerating-this-for-certain-platformslanguagestools">
+  <a href="https://gitignore.io">gitignore.io</a> - very useful for
+  autogenerating this for certain platforms/languages/tools</h4>
+  <hr>
+
+  <h1 id="command-line-git-key-commands">Command Line Git – Key
+  Commands</h1>
+
+  <h2 id="creation-git-init-and-git-remote">Creation: <code>git
+  init</code> and <code>git remote</code></h2>
+
+  <p>This is how you create a local project!</p>
+
+  <div class="sourceCode" id="cb3">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb3-1"
+title="1" name="cb3-1"><span class=
+"fu">git</span> init <span class="co"># create the .git folder</span></a>
+<a class="sourceLine" id="cb3-2" title="2" name=
+"cb3-2"><span class="fu">git</span> remote -v <span class=
+"co"># you have nowhere to send your changes!</span></a>
+<a class="sourceLine" id="cb3-3" title="3" name=
+"cb3-3"><span class="fu">git</span> remote add origin https://github.com/matthewwolff/github_workshop</a>
+<a class="sourceLine" id="cb3-4" title="4" name=
+"cb3-4"><span class="fu">git</span> remote -v <span class=
+"co"># origin is now set!</span></a></code>
+</pre>
+  </div>
+
+  <h2 id="git-status"><code>git status</code></h2>
+
+  <p>Git will automatically evaluate which files have been changed,
+  created, or deleted, and will then give you a quick report</p>
+
+  <div class="sourceCode" id="cb4">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb4-1"
+title="1" name="cb4-1"><span class="op">&gt;</span> <span class=
+"fu">git</span> status</a>
+<a class="sourceLine" id="cb4-2" title="2" name=
+"cb4-2"><span class="ex">On</span> branch master</a>
+<a class="sourceLine" id="cb4-3" title="3" name="cb4-3"></a>
+<a class="sourceLine" id="cb4-4" title="4" name=
+"cb4-4"><span class="ex">No</span> commits yet</a>
+<a class="sourceLine" id="cb4-5" title="5" name="cb4-5"></a>
+<a class="sourceLine" id="cb4-6" title="6" name=
+"cb4-6"><span class="ex">Untracked</span> files:</a>
+<a class="sourceLine" id="cb4-7" title="7" name=
+"cb4-7">  <span class="kw">(</span><span class=
+"ex">use</span> <span class=
+"st">&quot;git add [file]...&quot;</span> to include in what will be committed<span class="kw">)</span></a>
+<a class="sourceLine" id="cb4-8" title="8" name="cb4-8"></a>
+<a class="sourceLine" id="cb4-9" title="9" name=
+"cb4-9">    <span class="ex">README.md</span></a>
+<a class="sourceLine" id="cb4-10" title="10" name=
+"cb4-10">    <span class="ex">images/</span></a>
+<a class="sourceLine" id="cb4-11" title="11" name=
+"cb4-11">    <span class="ex">index.html</span></a>
+<a class="sourceLine" id="cb4-12" title="12" name="cb4-12"></a>
+<a class="sourceLine" id="cb4-13" title="13" name=
+"cb4-13"><span class=
+"ex">nothing</span> added to commit but untracked files present (use <span class="st">&quot;git add&quot;</span> to track)</a></code>
+</pre>
+  </div>
+
+  <h2 id="git-add---all"><code>git add --all</code></h2>
+
+  <p>A nice short-hand to add all the files at once! It’s
+  recursive, so be careful</p>
+
+  <h2 id="git-commit--m-my-message"><code>git commit -m "my
+  message"</code></h2>
+
+  <p>It’s important to have a descriptive message, especially if
+  you’re working with other people. Saying “Fixed bug”
+  isn’t very useful!</p>
+
+  <h2 id="git-push"><code>git push</code></h2>
+
+  <p>Git is decentralized. Your repository is local until you make
+  it global. Use <code>git push</code> to send your changes off to
+  the repository</p>
+
+  <h2 id="git-pull"><code>git pull</code></h2>
+
+  <p>If you’re working on a project on a lab computer and a home
+  computer and making changes from both, pull the changes that you
+  pushed from the other computer! Also, if you’re working with
+  other people you want to make sure you have the latest
+  changes</p>
+
+  <h2 id="git-checkout-filename"><code>git checkout
+  [filename]</code></h2>
+
+  <p>This one is good to know. If you want to undo all the changes
+  that you made to a file, you can just “checkout” that file
+  from the last commit. Very good for undoing mistakes or
+  accidental changes</p>
+
+  <h2 id="all-together">All Together</h2>
+
+  <div class="sourceCode" id="cb5">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb5-1"
+title="1" name="cb5-1"><span class="bu">echo</span> <span class=
+"st">&quot;i have created a repo on GitHub with this project name&quot;</span></a>
+<a class="sourceLine" id="cb5-2" title="2" name=
+"cb5-2"><span class="fu">mkdir</span> my_project <span class=
+"kw">&amp;&amp;</span> <span class="bu">cd</span> my_project</a>
+<a class="sourceLine" id="cb5-3" title="3" name=
+"cb5-3"><span class="fu">git</span> init</a>
+<a class="sourceLine" id="cb5-4" title="4" name=
+"cb5-4"><span class="fu">git</span> remote add origin https://github.com/matthewwolff/my_project</a>
+<a class="sourceLine" id="cb5-5" title="5" name=
+"cb5-5"><span class="fu">git</span> status</a>
+<a class="sourceLine" id="cb5-6" title="6" name="cb5-6"></a>
+<a class="sourceLine" id="cb5-7" title="7" name=
+"cb5-7"><span class="bu">echo</span> <span class=
+"st">&quot;# My Project&quot;</span> <span class=
+"op">&gt;&gt;</span> README.md <span class=
+"co"># create a change</span></a>
+<a class="sourceLine" id="cb5-8" title="8" name="cb5-8"></a>
+<a class="sourceLine" id="cb5-9" title="9" name=
+"cb5-9"><span class="fu">git</span> add --all</a>
+<a class="sourceLine" id="cb5-10" title="10" name=
+"cb5-10"><span class="fu">git</span> commit -m <span class=
+"st">&quot;initial commit&quot;</span></a>
+<a class="sourceLine" id="cb5-11" title="11" name=
+"cb5-11"><span class="fu">git</span> push <span class=
+"co"># publish it</span></a>
+<a class="sourceLine" id="cb5-12" title="12" name="cb5-12"></a>
+<a class="sourceLine" id="cb5-13" title="13" name=
+"cb5-13"><span class="fu">rm</span> README.md <span class=
+"co"># oops</span></a>
+<a class="sourceLine" id="cb5-14" title="14" name=
+"cb5-14"><span class=
+"fu">git</span> checkout README.md <span class="co"># all better</span></a></code>
+</pre>
+  </div>
+  <hr>
+
+  <h1 id="best-practices">Best Practices</h1>
+
+  <p>Using Git correctly helps future you and your teammates</p>
+
+  <ul>
+    <li>Make clean, single-purpose commits</li>
+
+    <li>Don’t use <code>--force</code></li>
+
+    <li>Write meaningful commit messages</li>
+
+    <li>Don’t alter published history
+
+      <ul>
+        <li>I do this A LOT, but only on my personal projects</li>
+
+        <li>You can re-write git history, but if anyone else is
+        working with your code, it really screws them up and they
+        will have to deal with a lot of errors when trying to merge
+        or pulling</li>
+
+        <li>Some companies use <em>advanced</em> git configurations
+        to prevent this (look into “git hooks”)</li>
+      </ul>
+    </li>
+
+    <li>Don’t commit generated files
+
+      <ul>
+        <li>if your code generates files every time you run it,
+        don’t bother committing those!</li>
+      </ul>
+    </li>
+
+    <li>Don’t commit really big files that change often
+
+      <ul>
+        <li>your <code>.git/</code> folder will be bloated and
+        you’ll have to use a tool like <a href=
+        "https://rtyley.github.io/bfg-repo-cleaner/"><code>bfg</code></a>
+        to clean it out</li>
+      </ul>
+    </li>
+
+    <li>Don’t commit sensitive information
+
+      <ul>
+        <li>This goes without saying, but if you submit passwords
+        or API keys, you’ll need to edit the git history</li>
+
+        <li>You can’t just submit a new commit, because someone
+        could look at older commits</li>
+
+        <li>Use <a href=
+        "https://rtyley.github.io/bfg-repo-cleaner/"><code>bfg</code></a>
+        to fix this mistake</li>
+      </ul>
+    </li>
+  </ul>
+  <hr>
+
+  <h1 id="misc.">Misc.</h1>
+
+  <h3 id="git-integration">Git Integration</h3>
+
+  <p>Almost every IDE (Integrated Developer Environment) that you
+  use has git integration! For instance, Atom, IntelliJ, GoLand.
+  It’s like a miniature GitHub desktop, except it’s not
+  specific to GitHub!</p>
+
+  <h3 id="are-there-other-version-control-systems">Are there other
+  Version Control systems?</h3>
+
+  <p>Yes, there are actually a few, and the following list is not
+  exhaustive:</p>
+
+  <ul>
+    <li>Git
+
+      <ul>
+        <li>Created in 2005 and currently the most used</li>
+
+        <li>Decentralized, so you don’t need a central
+        server</li>
+
+        <li>Can have local changes and use it completely
+        offline</li>
+
+        <li>Written in C</li>
+      </ul>
+    </li>
+
+    <li>Mercurial
+
+      <ul>
+        <li>Decentralized, like Git</li>
+
+        <li>Doesn’t have a Merge feature (some people really
+        don’t like that)</li>
+
+        <li>Written in Python</li>
+
+        <li>Was competing with Git to be used by Linux Kernel,
+        ultimately lost</li>
+
+        <li>Easier to learn than Git, with better
+        documentation</li>
+      </ul>
+    </li>
+
+    <li>CVS [Concurrent Versions System]
+
+      <ul>
+        <li>a dinosaur from the 80’s</li>
+
+        <li>Centralized, runs on your server</li>
+
+        <li>You “check out” code, make changes, then “check
+        in”</li>
+      </ul>
+    </li>
+
+    <li>SVN [Apache SubVersioN]
+
+      <ul>
+        <li>A better version of CVS</li>
+
+        <li>Centralized</li>
+
+        <li>Not <em>totally</em> uncommon</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3 id="cool-commands">Cool Commands</h3>
+
+  <p>I have dozens of bash aliases set up for certain git commands.
+  It helps to not need to remember or worry about certain things,
+  like which branch you’re on.</p>
+
+  <ul>
+    <li>
+      <code>git whatchanged -p --abbrev-commit
+      --pretty=medium</code>
+
+      <ul>
+        <li>HEAVEN SENT. This lets you view a <code>diff</code> of
+        the past commits</li>
+
+        <li>extremely useful to jog your memory on what was changed
+        in the last commit</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git diff</code>
+
+      <ul>
+        <li>this shows the you the difference between your current
+        files and the last commit. Only more useful than the above
+        when you haven’t committed yet</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git reset</code>
+
+      <ul>
+        <li>This will do a <strong>soft</strong> reset and unstage
+        any changes</li>
+
+        <li>Useful for when you accidentally <code>git add</code> a
+        file</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git log --oneline --decorate --graph</code>
+
+      <ul>
+        <li>see a brief, visual summary of the branch
+        histories</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git status -s</code>
+
+      <ul>
+        <li>see which uncommitted files have changed!</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git [push/pull] origin "$(git_current_branch)"</code>
+
+      <ul>
+        <li>this uses a built-in git method to grab your current
+        branch</li>
+
+        <li>most useful when you’re working with branches</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git stash</code> and <code>git stash pop</code>
+
+      <ul>
+        <li>When you’re switching between branches and you
+        don’t want to commit your changes yet, you can simply
+        stash them. When you switch back to the branch, use
+        <code>git stash pop</code> to pop them off the stash stack
+        (data structures!)</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git cherry-pick</code>
+
+      <ul>
+        <li>This let’s you pluck a single commit from a different
+        branch and add it to your current branch</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git pull --rebase</code>
+
+      <ul>
+        <li>This is what some people actually use as their default
+        pull command<br>
+        &gt; “Whenever I pull, under most circumstances I git
+        pull –rebase. This is because I like to see a linear
+        history (my commit came after all commits that were pushed
+        before it, instead of being developed in parallel). It
+        makes history visualization much simpler and git bisect
+        easier to see and understand. A specific circumstance in
+        which you should avoid using <code>git pull --rebase</code>
+        is if you merged since your last push. You might want to
+        <code>git fetch; git rebase -p @{u}</code> (and check to
+        make sure the merge was recreated properly) or do a normal
+        merge in that circumstance.”</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3 id="naughty-commands">Naughty Commands</h3>
+
+  <p>Let’s talk about what you <em>shouldn’t</em> do, but might
+  find useful. These all have to do with re-writing history. As a
+  rule of thumb, you know that you’re doing something bad when
+  you have to use <code>git push --force</code>, so please keep
+  that in mind.</p>
+
+  <p>When you use the <code>--force</code> flag, that means your
+  local repo disagrees with the origin. However, if you haven’t
+  <strong><code>pushed</code></strong> yet, then you can manipulate
+  all your local commits however you want! That’s the ideal use
+  case for these.</p>
+
+  <ul>
+    <li>
+      <code>git reset --hard [COMMIT HASH]</code>
+
+      <ul>
+        <li>Permanently time travel backwards to a specific
+        commit</li>
+
+        <li>This will destroy any changes you’ve made since then
+        unless you’ve pushed them</li>
+
+        <li>Find the commit hash using <code>git log</code></li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git commit --amend</code>: edit your last commit
+      message
+
+      <ul>
+        <li>I use this a lot for quick adjustments before I
+        push</li>
+      </ul>
+    </li>
+
+    <li>
+      <code>git add [file] &amp;&amp; git commit -v --no-edit
+      --amend</code>
+
+      <ul>
+        <li>This adds a file to your last commit and re-submits
+        it</li>
+      </ul>
+    </li>
+  </ul>
+
+  <p>An alias I personally use a lot when I’m making lots of
+  small adjustments to something I just pushed is:</p>
+
+  <div class="sourceCode" id="cb6">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb6-1"
+title="1" name="cb6-1"><span class="bu">alias</span> <span class=
+"st">&#39;oops!&#39;</span>=<span class=
+"st">&#39;git add --all &amp;&amp; git commit -v --no-edit --amend &amp;&amp; git push -u --force $(git_current_branch)&#39;</span></a></code>
+</pre>
+  </div>
+  <hr>
+
+  <h2 id="plug-oh-my-zsh-git-aliases">Plug: Oh-my-zsh Git
+  Aliases</h2>
+
+  <p>If you use <a href="https://ohmyz.sh/">Oh-My-Zsh</a> (I love
+  it) instead BASH and have the <code>git</code> plugin, you have
+  automatic access to <a href=
+  "https://github.com/ohmyzsh/ohmyzsh/wiki/Cheatsheet#git">a
+  plethora of git aliases</a>. As a small plug, Oh-My-Zsh is a ZSH
+  framework that adds a ton of functionality to your terminal and
+  has lots of <a href=
+  "https://github.com/ohmyzsh/ohmyzsh/wiki/Themes">different shell
+  prompts or “themes”</a>. Overall: Zsh + oh-my-zsh framework
+  will give you auto-completion, tab completion, several cool
+  themes, programming language integration and like bash is POSIX
+  compliant (I suggest you not learn anything that isn’t—it
+  won’t be generally portable knowledge).</p>
+
+  <p>You can try out my personal ZSH + oh-my-zsh set-up, which will
+  also make the aliases available to you as long as you’re in
+  ZSH:</p>
+
+  <div class="sourceCode" id="cb7">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb7-1"
+title="1" name="cb7-1"><span class=
+"ex">curl</span> -fsSL tryzsh.wolff.sh <span class=
+"kw">|</span> <span class="fu">bash</span></a></code>
+</pre>
+  </div>
+</body>
+</html>
