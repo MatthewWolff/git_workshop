@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta name="generator" content=
-  "HTML Tidy for Mac OS X (vers 31 October 2006 - Apple Inc. build 15.18.3), see www.w3.org">
+  "HTML Tidy for Mac OS X (vers 31 October 2006 - Apple Inc. build 15.18.4), see www.w3.org">
 
   <title></title>
 </head>
@@ -11,16 +11,11 @@
 <body>
   <h1 id="git-overview">Git: Overview</h1>
 
-  <h3 id=
-  "go-to-wolff.shgit_workshop-and-follow-along-during-our-recitation">
-  Go to <a href=
-  "https://wolff.sh/git_workshop">wolff.sh/git_workshop</a> and
-  follow along during our recitation!</h3>
-
   <p>(<em>Note: GitHub lets you host (static) webpages for all of
-  your projects, for free. The webpage associated with this project
-  (above) is just an HTML document that I generated from the README
-  using <a href=
+  your projects, for free. The <a href=
+  "matthewwolff.github.io/git_workshop/">webpage</a> associated
+  with this project is just an HTML document that I generated from
+  the README using <a href=
   "https://pandoc.org/"><code>pandoc</code></a></em>.)</p>
   <hr>
 
@@ -53,6 +48,16 @@
   essentially creating different version of the same document and
   manually organizing them on your desktop! Not very effective
   though.</p>
+
+  <p>Take this up a level. We’re developing some bioinformatic
+  sequencing software. Because we’re good developers, we write
+  modular code and have many small files of code that we can re-use
+  across the application. As we try out new algorithms, these files
+  change and improve—but imagine trying to just send around the
+  latest copy of these files or upload them all to Google
+  drive—what if someone overwrites a copy of new changes with
+  their own, older changes, and it breaks everything? We need
+  stronger version control!</p>
 
   <h2 id="what-is-git">What is Git?</h2>
 
@@ -129,6 +134,18 @@
     collaborators for private repositories, and advanced code
     review tools for private and public repositories.</p>
   </blockquote>
+
+  <p>Not only is it good for storing code and versioning it, it
+  also is excellent for sharing your work. As you navigate through
+  various pages on GitHub, you’ll find there is often a small
+  writeup on some pages called the “README.md”. Whenever GitHub
+  finds a file called README in a repository or folder of a
+  repository, it will display that for you when you’re viewing
+  it.</p>
+
+  <p>That little document often contains instructions to compile
+  their code, information about the different parameters it takes,
+  and even some examples! We’ll revisit this later.</p>
   <hr>
 
   <h1 id="git-concepts">Git Concepts</h1>
@@ -147,6 +164,13 @@
 
     <li>The repository is where you’ll send your updates</li>
   </ul>
+
+  <h3 id="cloning">Cloning</h3>
+
+  <p>When you want to grab someone’s repo, you don’t have to
+  just download the current code. You can <code>git clone</code>
+  the repo, which will give you an exact copy of its current
+  state.</p>
 
   <h2 id="commits">Commits</h2>
 
@@ -190,7 +214,7 @@
   you’re working with other people, so sometimes it’s nice to
   have your own git workspace.</p>
 
-  <h2 id="branching-and-merging">Branching and Merging</h2>
+  <h2 id="branching">Branching</h2>
 
   <p>Want to start adding something new but don’t want to
   interfere with the stable code? Time to start a new branch! By
@@ -211,41 +235,176 @@ title="1" name="cb1-1"><span class="op">&gt;</span> <span class=
   you can grow it separately. When you’re done, you can splice
   that branch back into the main tree!</p>
 
+  <p>Here’s what it looks like in GitHub Desktop:</p>
+
+  <p><img src="./images/new_branch.png" width="400"></p>
+
+  <h2 id="merging">Merging</h2>
+
   <p>What is this splicing exactly? It’s the “merge”
   operation. Merging is best done when there aren’t conflicts
   between the new cold and the old code, but Git helps you handle
   conflicts when they arise.</p>
 
-  <h2 id="whats-all-this-about-origin-and-master">What’s all this
-  about Origin and Master?</h2>
+  <p>This is one of the main strengths of GitHub—it’s very good
+  at automatically merging when it can, and otherwise pointing out
+  where the “merge conflicts” are, i.e., the places where you
+  need to tell it what code to keep. Let’s do a quick
+  example:</p>
 
-  <p>The “origin” is the remote location that is housing the
-  code. By default, it is named “origin”, which is just a
-  convention that arose.</p>
+  <div class="sourceCode" id="cb2">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb2-1"
+title="1" name="cb2-1"><span class="bu">echo</span> <span class=
+"st">&quot;original file contents&quot;</span> <span class=
+"op">&gt;</span> my_file</a>
+<a class="sourceLine" id="cb2-2" title="2" name=
+"cb2-2"><span class="fu">git</span> add my_file</a>
+<a class="sourceLine" id="cb2-3" title="3" name=
+"cb2-3"><span class="fu">git</span> commit -m <span class=
+"st">&quot;added a new file&quot;</span></a>
+<a class="sourceLine" id="cb2-4" title="4" name=
+"cb2-4"><span class="fu">git</span> push origin master</a></code>
+</pre>
+  </div>
 
-  <p>You can set up different remote locations if you like—I have
-  set up both GitHub and GitLab on the same repository, I just
-  needed to push my changes to each remote location.</p>
+  <p>Okay! We made some code.</p>
 
-  <p>The “master” is the default branch that is created when
-  you’re working on a project. It, too, is a common convention.
-  Amazon uses “mainline’ as their default name, and other
-  companies are switching away from the”master" terminology.
-  Branching is a useful feature for developing new or experimental
-  changes in isolation without impacting the existing code.</p>
+  <div class="sourceCode" id="cb3">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb3-1"
+title="1" name="cb3-1"><span class=
+"fu">git</span> checkout -b dev_branch  <span class=
+"co"># swap to a new branch for dev</span></a>
+<a class="sourceLine" id="cb3-2" title="2" name=
+"cb3-2"><span class="bu">echo</span> <span class=
+"st">&quot;a newly rewritten file&quot;</span> <span class=
+"op">&gt;</span> my_file</a>
+<a class="sourceLine" id="cb3-3" title="3" name=
+"cb3-3"><span class="bu">echo</span> <span class=
+"st">&quot;a cool change&quot;</span> <span class=
+"op">&gt;&gt;</span> my_file</a>
+<a class="sourceLine" id="cb3-4" title="4" name=
+"cb3-4"><span class="fu">git</span> add my_file</a>
+<a class="sourceLine" id="cb3-5" title="5" name=
+"cb3-5"><span class="fu">git</span> commit -m <span class=
+"st">&quot;rewrote first part, added more&quot;</span></a>
+<a class="sourceLine" id="cb3-6" title="6" name=
+"cb3-6"><span class="fu">git</span> push origin dev_branch</a></code>
+</pre>
+  </div>
+
+  <p>Now we have a dev branch with some new code. Could we merge
+  this? Why or why not?</p>
+
+  <p>(yes! we could. dev changes would overwrite master. but
+  let’s hold off on merging back in)</p>
+
+  <p>Further:</p>
+
+  <div class="sourceCode" id="cb4">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb4-1"
+title="1" name="cb4-1"><span class=
+"fu">git</span> checkout master</a>
+<a class="sourceLine" id="cb4-2" title="2" name=
+"cb4-2"><span class="bu">echo</span> <span class=
+"st">&quot;a newer change&quot;</span> <span class=
+"op">&gt;&gt;</span> my_file</a>
+<a class="sourceLine" id="cb4-3" title="3" name=
+"cb4-3"><span class="fu">git</span> add my_file</a>
+<a class="sourceLine" id="cb4-4" title="4" name=
+"cb4-4"><span class="fu">git</span> commit -m <span class=
+"st">&quot;a newer change&quot;</span></a>
+<a class="sourceLine" id="cb4-5" title="5" name=
+"cb4-5"><span class="fu">git</span> push origin master</a></code>
+</pre>
+  </div>
+
+  <p>So what now? Can we merge? There’s an even newer change on
+  Master that an overwrite would lose…</p>
+
+  <h2 id="pull-requests">Pull Requests</h2>
+
+  <p>When you want to want to merge branches, you create a pull
+  request. This is how GitHub handles merges (and you’ll find
+  that command line Git isn’t very fun to do merges with when
+  there are conflicts).</p>
+
+  <p>Let’s hop on GitHub and see if we can do our branch merge
+  from before:</p>
+
+  <ul>
+    <li><img src="./images/new_change.png" alt="new change" width=
+    "500"></li>
+
+    <li><img src="./images/cant_merge.png" alt="can't merge" width=
+    "500"></li>
+
+    <li><img src="./images/made_pull_request.png" alt=
+    "pull request" width="500"></li>
+
+    <li><img src="./images/resolve_conflict.png" alt="resolve"
+    width="500"></li>
+
+    <li>To resolve the merge conflict, you’ll need to get rid of
+    the “&lt;&lt;&lt;&lt;&lt;” and “&gt;&gt;&gt;&gt;&gt;”
+    symbols—they communicate which code belongs to which
+    branch.</li>
+
+    <li><img src="./images/resolved.png" alt="resolved" width=
+    "500"></li>
+
+    <li><img src="./images/ready_to_merge.png" alt="ready to merge"
+    width="500"></li>
+  </ul>
+
+  <h2 id="forking">Forking</h2>
+
+  <p>Let’s say you find a great package on GitHub that fits your
+  use-case, but it’s written in Python 2 and has a few bugs.
+  Let’s say that the owner of this package is pretty busy. So
+  what do you do? We fix it our self and then make a pull
+  request!</p>
+
+  <p>If you just clone someone’s repo, you’ll run into trouble
+  when you try to push—you don’t have permission! Therefore,
+  let’s fork it. On GitHub, this will create a copy of the repo
+  under <em>your account</em>. Even if the owner deletes the
+  original repo, you still have yours. Additionally, it’s easy to
+  create a pull request from your fork of their repo!</p>
+
+  <p><img src="./images/forking.png" width="800"></p>
+
+  <h3 id="forking-vs.-branching">Forking vs. Branching</h3>
+
+  <p>These are both ways of adding on to the main code. There are
+  some philosophical differences and Git-level differences between
+  them.</p>
+
+  <ul>
+    <li>Both can be used for pull requests</li>
+
+    <li>Both will create a copy of the code</li>
+
+    <li>Forking creates the copy under your account</li>
+
+    <li>Branching creates a new branch under the original code
+    (need permission)</li>
+  </ul>
 
   <h2 id="so-these-are-all-words-but-can-you-give-an-analogy">So
   these are all words, but can you give an analogy?</h2>
 
-  <p>I think it all comes together like growing a <strong>bonsai
-  tree</strong> in your house. All together, it’s a gradual
-  process where you can curate designs and shapes with the wood.
-  You can keep the blinds closed or let specific people into your
+  <p>I think it all comes together like growing a
+  <strong>tree</strong>. All together, it’s a gradual process
+  where you can curate designs and shapes with the wood. You can
+  keep the blinds closed or let specific people into your
   house!</p>
 
-  <p><strong>A Pot with Soil</strong>: Having a GitHub or GitLab
-  account is having a place to grow your plant. It’s your pot
-  with soil.</p>
+  <p><strong>A Bed with Soil</strong>: Having a GitHub or GitLab
+  account is having a place to grow your plant. It’s your
+  soil.</p>
 
   <p><strong>A Seed</strong>: Creating the repo is like planting a
   seed—now you can watch it grow.</p>
@@ -253,15 +412,9 @@ title="1" name="cb1-1"><span class="op">&gt;</span> <span class=
   <p><strong>Taking up Nutrients…</strong>: Adding changes to
   your files! These are what you need to grow the project.</p>
 
-  <p><strong>Growing Taller</strong>: Committing those changes to
-  your project grows it. Commit after commit, the project grows
-  bigger.</p>
-
-  <p><strong>Opening the Blinds</strong>: Push! People need to see
-  your project! If you don’t push your local changes to the repo,
-  they might as well not exist! That said, you can push to a
-  <em>private</em> repo, so that only people you let inside your
-  house can see the bonsai tree.</p>
+  <p><strong>Growing Taller</strong>: Committing and pushing those
+  changes to your project grows it. Commit after commit, the
+  project grows bigger.</p>
 
   <p><strong>Branching</strong>: Very literal here. You’re
   growing out a new branch from the trunk. The trunk will continue
@@ -287,7 +440,8 @@ title="1" name="cb1-1"><span class="op">&gt;</span> <span class=
   objects, commit objects, and blobs). At the same time, it holds
   within it a graph structure. Most people use it for years and
   years without ever bothering with what’s going on underneath
-  and, frankly, I think it’s not worth understanding.</p>
+  and, honestly, knowing how it is implemented won’t drastically
+  improve your ability to work with it.</p>
   <hr>
 
   <h1 id="example">Example</h1>
@@ -362,20 +516,20 @@ title="1" name="cb1-1"><span class="op">&gt;</span> <span class=
         below!<br></li>
       </ul>
 
-      <div class="sourceCode" id="cb2">
+      <div class="sourceCode" id="cb5">
         <pre class="sourceCode md">
-<code class="sourceCode markdown"><a class="sourceLine" id="cb2-1"
-title="1" name="cb2-1"><span class="fu"># Hey! 👻</span></a>
-<a class="sourceLine" id="cb2-2" title="2" name=
-"cb2-2">* <span class=
+<code class="sourceCode markdown"><a class="sourceLine" id="cb5-1"
+title="1" name="cb5-1"><span class="fu"># Hey! 👻</span></a>
+<a class="sourceLine" id="cb5-2" title="2" name=
+"cb5-2">* <span class=
 "fl">UW ➡️ Computer Science, Genetics &amp; Genomics</span></a>
-<a class="sourceLine" id="cb2-3" title="3" name=
-"cb2-3"><span class="fl">* CMU ➡️ Computational 🅱️iology, Data Science</span></a>
-<a class="sourceLine" id="cb2-4" title="4" name="cb2-4"></a>
-<a class="sourceLine" id="cb2-5" title="5" name=
-"cb2-5"><span class="al">![GitHub Stats](https://github-readme-stats.vercel.app/api?username=matthewwolff&amp;include_all_commits=true&amp;include_private=true&amp;hide=contribs&amp;show_icons=true&amp;&amp;line_height=40)</span></a>
-<a class="sourceLine" id="cb2-6" title="6" name=
-"cb2-6"><span class="al">![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=matthewwolff&amp;show_icons=true&amp;hide=R,JavaScript,MATLAB&amp;langs_count=7)</span></a></code>
+<a class="sourceLine" id="cb5-3" title="3" name=
+"cb5-3"><span class="fl">* CMU ➡️ Computational 🅱️iology, Data Science</span></a>
+<a class="sourceLine" id="cb5-4" title="4" name="cb5-4"></a>
+<a class="sourceLine" id="cb5-5" title="5" name=
+"cb5-5"><span class="al">![GitHub Stats](https://github-readme-stats.vercel.app/api?username=matthewwolff&amp;include_all_commits=true&amp;include_private=true&amp;hide=contribs&amp;show_icons=true&amp;&amp;line_height=40)</span></a>
+<a class="sourceLine" id="cb5-6" title="6" name=
+"cb5-6"><span class="al">![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=matthewwolff&amp;show_icons=true&amp;hide=R,JavaScript,MATLAB&amp;langs_count=7)</span></a></code>
 </pre>
       </div>
     </li>
@@ -389,6 +543,34 @@ title="1" name="cb2-1"><span class="fu"># Hey! 👻</span></a>
       <p><img src="./images/github_profile.png" width="1000"></p>
     </li>
   </ol>
+  <hr>
+
+  <h1 id="making-a-pull-request">Making a Pull Request</h1>
+
+  <ol type="1">
+    <li>Create a new branch using GitHub desktop</li>
+
+    <li>Make some changes
+
+      <ul>
+        <li>Commit them! Push them to origin!</li>
+      </ul>
+    </li>
+
+    <li>Create a pull request! (will open Github)</li>
+
+    <li>Merge the pull request</li>
+
+    <li>Profit</li>
+  </ol>
+
+  <p><img src="./images/new_branch.png" width="800"> <img src=
+  "./images/push_to_origin.png" width="800"> <img src=
+  "./images/create_pull_request.png" width="800"> <img src=
+  "./images/open_pull_request.png" width="800"> <img src=
+  "./images/merge_pull_request.png" width="800"> <img src=
+  "./images/done.png" width="800"> <img src=
+  "./images/delete_branch.png" width="800"></p>
   <hr>
 
   <h2 id="gitignore">.gitignore</h2>
@@ -416,26 +598,55 @@ title="1" name="cb2-1"><span class="fu"># Hey! 👻</span></a>
   autogenerating this for certain platforms/languages/tools</h4>
   <hr>
 
-  <h1 id="command-line-git-key-commands">Command Line Git – Key
-  Commands</h1>
+  <h1 id="git-commands">Git Commands</h1>
+
+  <h2 id="creation-git-clone">Creation: <code>git clone</code></h2>
+
+  <p>If you create your repo on GitHub first, you can copy the url
+  and use it with <code>git clone</code></p>
+
+  <div class="sourceCode" id="cb6">
+    <pre class="sourceCode bash">
+<code class="sourceCode bash"><a class="sourceLine" id="cb6-1"
+title="1" name="cb6-1"><span class="op">&gt;</span> <span class=
+"fu">git</span> clone https://github.com/MatthewWolff/.sandbox</a>
+<a class="sourceLine" id="cb6-2" title="2" name=
+"cb6-2"><span class="ex">Cloning</span> into <span class=
+"st">&#39;.sandbox&#39;</span>...</a>
+<a class="sourceLine" id="cb6-3" title="3" name=
+"cb6-3"><span class="ex">remote</span>: Enumerating objects: 25, done.</a>
+<a class="sourceLine" id="cb6-4" title="4" name=
+"cb6-4"><span class="ex">remote</span>: Counting objects: 100% (25/25), <span class="kw">done</span><span class="ex">.</span></a>
+<a class="sourceLine" id="cb6-5" title="5" name=
+"cb6-5"><span class="ex">remote</span>: Compressing objects: 100% (14/14), <span class="kw">done</span><span class="ex">.</span></a>
+<a class="sourceLine" id="cb6-6" title="6" name=
+"cb6-6"><span class="ex">remote</span>: Total 25 (delta 2), <span class="ex">reused</span> 20 (delta 1), <span class="ex">pack-reused</span> 0</a>
+<a class="sourceLine" id="cb6-7" title="7" name=
+"cb6-7"><span class="ex">Unpacking</span> objects: 100% (25/25), <span class="kw">done</span><span class="ex">.</span></a>
+<a class="sourceLine" id="cb6-8" title="8" name=
+"cb6-8"><span class="op">&gt;</span></a></code>
+</pre>
+  </div>
 
   <h2 id="creation-git-init-and-git-remote">Creation: <code>git
   init</code> and <code>git remote</code></h2>
 
-  <p>This is how you create a local project!</p>
+  <p>This is how you create project locally if you already have
+  existing code! You can copy the URL of the GitHub repo you
+  created:</p>
 
-  <div class="sourceCode" id="cb3">
+  <div class="sourceCode" id="cb7">
     <pre class="sourceCode bash">
-<code class="sourceCode bash"><a class="sourceLine" id="cb3-1"
-title="1" name="cb3-1"><span class=
+<code class="sourceCode bash"><a class="sourceLine" id="cb7-1"
+title="1" name="cb7-1"><span class=
 "fu">git</span> init <span class="co"># create the .git folder</span></a>
-<a class="sourceLine" id="cb3-2" title="2" name=
-"cb3-2"><span class="fu">git</span> remote -v <span class=
+<a class="sourceLine" id="cb7-2" title="2" name=
+"cb7-2"><span class="fu">git</span> remote -v <span class=
 "co"># you have nowhere to send your changes!</span></a>
-<a class="sourceLine" id="cb3-3" title="3" name=
-"cb3-3"><span class="fu">git</span> remote add origin https://github.com/matthewwolff/github_workshop</a>
-<a class="sourceLine" id="cb3-4" title="4" name=
-"cb3-4"><span class="fu">git</span> remote -v <span class=
+<a class="sourceLine" id="cb7-3" title="3" name=
+"cb7-3"><span class="fu">git</span> remote add origin https://github.com/MatthewWolff/.sandbox</a>
+<a class="sourceLine" id="cb7-4" title="4" name=
+"cb7-4"><span class="fu">git</span> remote -v <span class=
 "co"># origin is now set!</span></a></code>
 </pre>
   </div>
@@ -445,33 +656,33 @@ title="1" name="cb3-1"><span class=
   <p>Git will automatically evaluate which files have been changed,
   created, or deleted, and will then give you a quick report</p>
 
-  <div class="sourceCode" id="cb4">
+  <div class="sourceCode" id="cb8">
     <pre class="sourceCode bash">
-<code class="sourceCode bash"><a class="sourceLine" id="cb4-1"
-title="1" name="cb4-1"><span class="op">&gt;</span> <span class=
+<code class="sourceCode bash"><a class="sourceLine" id="cb8-1"
+title="1" name="cb8-1"><span class="op">&gt;</span> <span class=
 "fu">git</span> status</a>
-<a class="sourceLine" id="cb4-2" title="2" name=
-"cb4-2"><span class="ex">On</span> branch master</a>
-<a class="sourceLine" id="cb4-3" title="3" name="cb4-3"></a>
-<a class="sourceLine" id="cb4-4" title="4" name=
-"cb4-4"><span class="ex">No</span> commits yet</a>
-<a class="sourceLine" id="cb4-5" title="5" name="cb4-5"></a>
-<a class="sourceLine" id="cb4-6" title="6" name=
-"cb4-6"><span class="ex">Untracked</span> files:</a>
-<a class="sourceLine" id="cb4-7" title="7" name=
-"cb4-7">  <span class="kw">(</span><span class=
+<a class="sourceLine" id="cb8-2" title="2" name=
+"cb8-2"><span class="ex">On</span> branch master</a>
+<a class="sourceLine" id="cb8-3" title="3" name="cb8-3"></a>
+<a class="sourceLine" id="cb8-4" title="4" name=
+"cb8-4"><span class="ex">No</span> commits yet</a>
+<a class="sourceLine" id="cb8-5" title="5" name="cb8-5"></a>
+<a class="sourceLine" id="cb8-6" title="6" name=
+"cb8-6"><span class="ex">Untracked</span> files:</a>
+<a class="sourceLine" id="cb8-7" title="7" name=
+"cb8-7">  <span class="kw">(</span><span class=
 "ex">use</span> <span class=
 "st">&quot;git add [file]...&quot;</span> to include in what will be committed<span class="kw">)</span></a>
-<a class="sourceLine" id="cb4-8" title="8" name="cb4-8"></a>
-<a class="sourceLine" id="cb4-9" title="9" name=
-"cb4-9">    <span class="ex">README.md</span></a>
-<a class="sourceLine" id="cb4-10" title="10" name=
-"cb4-10">    <span class="ex">images/</span></a>
-<a class="sourceLine" id="cb4-11" title="11" name=
-"cb4-11">    <span class="ex">index.html</span></a>
-<a class="sourceLine" id="cb4-12" title="12" name="cb4-12"></a>
-<a class="sourceLine" id="cb4-13" title="13" name=
-"cb4-13"><span class=
+<a class="sourceLine" id="cb8-8" title="8" name="cb8-8"></a>
+<a class="sourceLine" id="cb8-9" title="9" name=
+"cb8-9">    <span class="ex">README.md</span></a>
+<a class="sourceLine" id="cb8-10" title="10" name=
+"cb8-10">    <span class="ex">images/</span></a>
+<a class="sourceLine" id="cb8-11" title="11" name=
+"cb8-11">    <span class="ex">index.html</span></a>
+<a class="sourceLine" id="cb8-12" title="12" name="cb8-12"></a>
+<a class="sourceLine" id="cb8-13" title="13" name=
+"cb8-13"><span class=
 "ex">nothing</span> added to commit but untracked files present (use <span class="st">&quot;git add&quot;</span> to track)</a></code>
 </pre>
   </div>
@@ -512,41 +723,41 @@ title="1" name="cb4-1"><span class="op">&gt;</span> <span class=
 
   <h2 id="all-together">All Together</h2>
 
-  <div class="sourceCode" id="cb5">
+  <div class="sourceCode" id="cb9">
     <pre class="sourceCode bash">
-<code class="sourceCode bash"><a class="sourceLine" id="cb5-1"
-title="1" name="cb5-1"><span class="bu">echo</span> <span class=
+<code class="sourceCode bash"><a class="sourceLine" id="cb9-1"
+title="1" name="cb9-1"><span class="bu">echo</span> <span class=
 "st">&quot;i have created a repo on GitHub with this project name&quot;</span></a>
-<a class="sourceLine" id="cb5-2" title="2" name=
-"cb5-2"><span class="fu">mkdir</span> my_project <span class=
+<a class="sourceLine" id="cb9-2" title="2" name=
+"cb9-2"><span class="fu">mkdir</span> my_project <span class=
 "kw">&amp;&amp;</span> <span class="bu">cd</span> my_project</a>
-<a class="sourceLine" id="cb5-3" title="3" name=
-"cb5-3"><span class="fu">git</span> init</a>
-<a class="sourceLine" id="cb5-4" title="4" name=
-"cb5-4"><span class="fu">git</span> remote add origin https://github.com/matthewwolff/my_project</a>
-<a class="sourceLine" id="cb5-5" title="5" name=
-"cb5-5"><span class="fu">git</span> status</a>
-<a class="sourceLine" id="cb5-6" title="6" name="cb5-6"></a>
-<a class="sourceLine" id="cb5-7" title="7" name=
-"cb5-7"><span class="bu">echo</span> <span class=
+<a class="sourceLine" id="cb9-3" title="3" name=
+"cb9-3"><span class="fu">git</span> init</a>
+<a class="sourceLine" id="cb9-4" title="4" name=
+"cb9-4"><span class="fu">git</span> remote add origin https://github.com/matthewwolff/my_project</a>
+<a class="sourceLine" id="cb9-5" title="5" name=
+"cb9-5"><span class="fu">git</span> status</a>
+<a class="sourceLine" id="cb9-6" title="6" name="cb9-6"></a>
+<a class="sourceLine" id="cb9-7" title="7" name=
+"cb9-7"><span class="bu">echo</span> <span class=
 "st">&quot;# My Project&quot;</span> <span class=
 "op">&gt;&gt;</span> README.md <span class=
 "co"># create a change</span></a>
-<a class="sourceLine" id="cb5-8" title="8" name="cb5-8"></a>
-<a class="sourceLine" id="cb5-9" title="9" name=
-"cb5-9"><span class="fu">git</span> add --all</a>
-<a class="sourceLine" id="cb5-10" title="10" name=
-"cb5-10"><span class="fu">git</span> commit -m <span class=
+<a class="sourceLine" id="cb9-8" title="8" name="cb9-8"></a>
+<a class="sourceLine" id="cb9-9" title="9" name=
+"cb9-9"><span class="fu">git</span> add --all</a>
+<a class="sourceLine" id="cb9-10" title="10" name=
+"cb9-10"><span class="fu">git</span> commit -m <span class=
 "st">&quot;initial commit&quot;</span></a>
-<a class="sourceLine" id="cb5-11" title="11" name=
-"cb5-11"><span class="fu">git</span> push <span class=
+<a class="sourceLine" id="cb9-11" title="11" name=
+"cb9-11"><span class="fu">git</span> push <span class=
 "co"># publish it</span></a>
-<a class="sourceLine" id="cb5-12" title="12" name="cb5-12"></a>
-<a class="sourceLine" id="cb5-13" title="13" name=
-"cb5-13"><span class="fu">rm</span> README.md <span class=
+<a class="sourceLine" id="cb9-12" title="12" name="cb9-12"></a>
+<a class="sourceLine" id="cb9-13" title="13" name=
+"cb9-13"><span class="fu">rm</span> README.md <span class=
 "co"># oops</span></a>
-<a class="sourceLine" id="cb5-14" title="14" name=
-"cb5-14"><span class=
+<a class="sourceLine" id="cb9-14" title="14" name=
+"cb9-14"><span class=
 "fu">git</span> checkout README.md <span class="co"># all better</span></a></code>
 </pre>
   </div>
@@ -559,7 +770,13 @@ title="1" name="cb5-1"><span class="bu">echo</span> <span class=
   <ul>
     <li>Make clean, single-purpose commits</li>
 
-    <li>Don’t use <code>--force</code></li>
+    <li>Don’t use <code>--force</code>
+
+      <ul>
+        <li>it will overwrite other’s changes, and you only need
+        to use it when you’ve done something bad</li>
+      </ul>
+    </li>
 
     <li>Write meaningful commit messages</li>
 
@@ -613,7 +830,14 @@ title="1" name="cb5-1"><span class="bu">echo</span> <span class=
   </ul>
   <hr>
 
-  <h1 id="misc.">Misc.</h1>
+  <h1 id="closing">Closing</h1>
+
+  <p>At this point, you should feel like you know how to add and
+  commit changes, as well as have a light grasp on what you
+  shouldn’t do when using Git.</p>
+  <hr>
+
+  <h1 id="appendix">Appendix</h1>
 
   <h3 id="git-integration">Git Integration</h3>
 
@@ -851,10 +1075,10 @@ title="1" name="cb5-1"><span class="bu">echo</span> <span class=
   <p>An alias I personally use a lot when I’m making lots of
   small adjustments to something I just pushed is:</p>
 
-  <div class="sourceCode" id="cb6">
+  <div class="sourceCode" id="cb10">
     <pre class="sourceCode bash">
-<code class="sourceCode bash"><a class="sourceLine" id="cb6-1"
-title="1" name="cb6-1"><span class="bu">alias</span> <span class=
+<code class="sourceCode bash"><a class="sourceLine" id="cb10-1"
+title="1" name="cb10-1"><span class="bu">alias</span> <span class=
 "st">&#39;oops!&#39;</span>=<span class=
 "st">&#39;git add --all &amp;&amp; git commit -v --no-edit --amend &amp;&amp; git push -u --force $(git_current_branch)&#39;</span></a></code>
 </pre>
@@ -882,10 +1106,10 @@ title="1" name="cb6-1"><span class="bu">alias</span> <span class=
   also make the aliases available to you as long as you’re in
   ZSH:</p>
 
-  <div class="sourceCode" id="cb7">
+  <div class="sourceCode" id="cb11">
     <pre class="sourceCode bash">
-<code class="sourceCode bash"><a class="sourceLine" id="cb7-1"
-title="1" name="cb7-1"><span class=
+<code class="sourceCode bash"><a class="sourceLine" id="cb11-1"
+title="1" name="cb11-1"><span class=
 "ex">curl</span> -fsSL tryzsh.wolff.sh <span class=
 "kw">|</span> <span class="fu">bash</span></a></code>
 </pre>
