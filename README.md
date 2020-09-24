@@ -1,6 +1,6 @@
 # Git: Overview
 
-(*Note: GitHub lets you host (static) webpages for all of your projects, for free. The [webpage](matthewwolff.github.io/git_workshop/) associated with this project is just an HTML document that I generated from the README using [`pandoc`](https://pandoc.org/)*.)
+(*Note: GitHub lets you host (static) webpages for all of your projects, for free. The [webpage](http://matthewwolff.github.io/git_workshop/) associated with this project is just an HTML document that I generated from the README using [`pandoc`](https://pandoc.org/)*.)
 
 ---
 
